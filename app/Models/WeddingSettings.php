@@ -8,6 +8,7 @@ use Carbon\Carbon;
 
 class WeddingSettings extends Model
 {
+    use HasFactory;
 
     protected $fillable = [
         'bride_name',
@@ -19,6 +20,14 @@ class WeddingSettings extends Model
 
     protected $casts = [
         'wedding_date' => 'date'
+    ];
+
+    protected $appends = [
+        'couple_name',
+        'days_until_wedding',
+        'is_wedding_today',
+        'is_wedding_past',
+        'time_until_wedding'
     ];
 
     public static function current()

@@ -30,6 +30,14 @@ class WeddingTask extends Model
         'priority' => TaskPriority::class,
     ];
 
+    protected $appends = [
+        'category_display',
+        'category_icon',
+        'category_color',
+        'priority_display',
+        'priority_color'
+    ];
+
     public function scopeCompleted($query)
     {
         return $query->where('is_completed', true);
