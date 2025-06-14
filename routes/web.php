@@ -4,6 +4,7 @@ use App\Http\Controllers\WeddingController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/persiapan', [WeddingController::class, 'progress'])->name('wedding.progress');
+Route::post('/tasks/{task}/toggle', [WeddingController::class, 'toggleTask'])->name('tasks.toggle');
 Route::get('/taaruf', function () {return view('taaruf');})->name('wedding.taaruf');
 //Route::get('/tunang', function () {return view('tunang');})->name('wedding.tunang');
 Route::redirect('/taaruf.html', '/taaruf');
@@ -22,7 +23,6 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [WeddingController::class, 'dashboard'])->name('dashboard');
     Route::post('/tasks', [WeddingController::class, 'createTask'])->name('tasks.create');
-    Route::post('/tasks/{task}/toggle', [WeddingController::class, 'toggleTask'])->name('tasks.toggle');
     Route::patch('/tasks/{task}', [WeddingController::class, 'updateTask'])->name('tasks.update');
     Route::delete('/tasks/{task}', [WeddingController::class, 'deleteTask'])->name('tasks.delete');
     Route::patch('/wedding/settings', [WeddingController::class, 'updateSettings'])->name('wedding.settings.update');
