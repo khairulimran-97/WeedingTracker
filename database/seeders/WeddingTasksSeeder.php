@@ -10,194 +10,194 @@ use Illuminate\Database\Seeder;
 
 class WeddingTasksSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        // Create wedding settings
         WeddingSettings::create([
             'bride_name' => 'Madihah',
             'groom_name' => 'Khairul',
             'hashtag' => '#KhairulMadihah',
-            'wedding_date' => '2024-12-25',
+            'wedding_date' => '2025-12-26',
             'theme_color' => '#E8B4B8'
         ]);
 
-        // Wedding tasks based on the image provided
         $tasks = [
-            // Legal tasks
+            // Kursus Kahwin
             [
-                'title' => 'Nikah (Solemnization)',
-                'description' => 'Complete the Islamic marriage ceremony',
+                'title' => 'Kursus Kahwin',
+                'description' => 'Menghadiri kursus pra-perkahwinan',
                 'category' => WeddingCategory::LEGAL,
                 'priority' => TaskPriority::HIGH,
-                'is_completed' => true,
-                'deadline' => '2024-12-20',
+                'deadline' => '2025-06-26',
+                'sort_order' => 0
+            ],
+
+            // Legal
+            [
+                'title' => 'Daftar Kahwin',
+                'description' => 'Pendaftaran perkahwinan di pejabat agama',
+                'category' => WeddingCategory::LEGAL,
+                'priority' => TaskPriority::HIGH,
+                'deadline' => '2025-09-01',
                 'sort_order' => 1
             ],
             [
-                'title' => 'Daftar Kahwin',
-                'description' => 'Register marriage with local authorities',
+                'title' => 'Sijil Nikah',
+                'description' => 'Dapatkan sijil perkahwinan rasmi',
                 'category' => WeddingCategory::LEGAL,
-                'priority' => TaskPriority::HIGH,
-                'is_completed' => true,
-                'deadline' => '2024-12-22',
+                'priority' => TaskPriority::MEDIUM,
+                'deadline' => '2025-10-01',
                 'sort_order' => 2
             ],
             [
-                'title' => 'Marriage Certificate',
-                'description' => 'Obtain official marriage certificate',
+                'title' => 'Dokumen Sokongan',
+                'description' => 'Lengkapkan semua borang dan surat sokongan',
                 'category' => WeddingCategory::LEGAL,
                 'priority' => TaskPriority::MEDIUM,
-                'is_completed' => true,
-                'deadline' => '2024-12-30',
+                'deadline' => '2025-08-15',
                 'sort_order' => 3
             ],
             [
-                'title' => 'Legal Documentation',
-                'description' => 'Complete all required legal paperwork',
+                'title' => 'Pemeriksaan Kesihatan',
+                'description' => 'Jalani pemeriksaan kesihatan pra-nikah',
                 'category' => WeddingCategory::LEGAL,
-                'priority' => TaskPriority::MEDIUM,
-                'is_completed' => true,
-                'deadline' => '2024-12-15',
+                'priority' => TaskPriority::HIGH,
+                'deadline' => '2025-08-01',
                 'sort_order' => 4
             ],
 
-            // Attire tasks
+            // Attire
             [
                 'title' => 'Baju Pengantin (Lelaki)',
-                'description' => 'Groom\'s traditional wedding attire',
+                'description' => 'Tempah pakaian pengantin lelaki',
                 'category' => WeddingCategory::ATTIRE,
                 'priority' => TaskPriority::HIGH,
-                'is_completed' => true,
-                'deadline' => '2024-12-20',
+                'deadline' => '2025-12-10',
                 'sort_order' => 5
             ],
             [
                 'title' => 'Baju Pengantin (Perempuan)',
-                'description' => 'Bride\'s traditional wedding attire',
+                'description' => 'Tempah pakaian pengantin perempuan',
                 'category' => WeddingCategory::ATTIRE,
                 'priority' => TaskPriority::HIGH,
-                'is_completed' => true,
-                'deadline' => '2024-12-20',
+                'deadline' => '2025-12-10',
                 'sort_order' => 6
             ],
 
-            // Jewelry tasks
+            // Jewelry
             [
-                'title' => 'Cincin (Perempuan)',
-                'description' => 'Wedding ring for the bride',
+                'title' => 'Cincin Kahwin (Perempuan)',
+                'description' => 'Beli cincin untuk pengantin perempuan',
                 'category' => WeddingCategory::JEWELRY,
                 'priority' => TaskPriority::HIGH,
-                'is_completed' => true,
-                'deadline' => '2024-12-15',
+                'deadline' => '2025-10-15',
                 'sort_order' => 7
             ],
             [
-                'title' => 'Cincin (Lelaki)',
-                'description' => 'Wedding ring for the groom',
+                'title' => 'Cincin Kahwin (Lelaki)',
+                'description' => 'Beli cincin untuk pengantin lelaki',
                 'category' => WeddingCategory::JEWELRY,
                 'priority' => TaskPriority::HIGH,
-                'is_completed' => true,
-                'deadline' => '2024-12-15',
+                'deadline' => '2025-10-15',
                 'sort_order' => 8
             ],
 
-            // Services tasks
+            // Photography
             [
-                'title' => 'Photographer',
-                'description' => 'Professional wedding photography services',
-                'category' => WeddingCategory::SERVICES,
+                'title' => 'Jurugambar',
+                'description' => 'Tempah jurugambar profesional untuk majlis',
+                'category' => WeddingCategory::PHOTOGRAPHY,
                 'priority' => TaskPriority::HIGH,
-                'is_completed' => true,
-                'deadline' => '2024-12-10',
+                'deadline' => '2025-11-15',
                 'sort_order' => 9
             ],
+
+            // Services
             [
                 'title' => 'Makeup Pengantin',
-                'description' => 'Bridal makeup and styling services',
+                'description' => 'Solekan dan dandanan pengantin',
                 'category' => WeddingCategory::SERVICES,
                 'priority' => TaskPriority::HIGH,
-                'is_completed' => true,
-                'deadline' => '2024-12-24',
+                'deadline' => '2025-12-25',
                 'sort_order' => 10
             ],
 
-            // Food task
+            // Food
             [
-                'title' => 'Catering',
-                'description' => 'Wedding reception catering services',
+                'title' => 'Katering (Pihak Perempuan)',
+                'description' => 'Tempah makanan untuk majlis pihak perempuan',
                 'category' => WeddingCategory::FOOD,
                 'priority' => TaskPriority::HIGH,
-                'is_completed' => true,
-                'deadline' => '2024-12-20',
+                'deadline' => '2025-12-15',
                 'sort_order' => 11
             ],
 
-            // Decoration tasks
+            // Decoration
             [
                 'title' => 'Pelamin (Perempuan)',
-                'description' => 'Bridal dais decoration',
+                'description' => 'Dekorasi pelamin untuk pihak perempuan',
                 'category' => WeddingCategory::DECORATION,
                 'priority' => TaskPriority::MEDIUM,
-                'is_completed' => true,
-                'deadline' => '2024-12-24',
+                'deadline' => '2025-12-20',
                 'sort_order' => 12
             ],
             [
                 'title' => 'Pelamin (Lelaki)',
-                'description' => 'Groom\'s dais decoration',
+                'description' => 'Dekorasi pelamin untuk pihak lelaki',
                 'category' => WeddingCategory::DECORATION,
                 'priority' => TaskPriority::MEDIUM,
-                'is_completed' => true,
-                'deadline' => '2024-12-24',
+                'deadline' => '2025-12-20',
                 'sort_order' => 13
             ],
             [
                 'title' => 'Welcome Board',
-                'description' => 'Wedding welcome signage',
+                'description' => 'Papan sambutan tetamu di majlis',
                 'category' => WeddingCategory::DECORATION,
                 'priority' => TaskPriority::LOW,
-                'is_completed' => true,
-                'deadline' => '2024-12-24',
+                'deadline' => '2025-12-23',
                 'sort_order' => 14
             ],
 
-            // Stationery task
+            // Stationery
             [
                 'title' => 'Kad Kahwin',
-                'description' => 'Wedding invitation cards',
+                'description' => 'Cetak dan edarkan kad jemputan',
                 'category' => WeddingCategory::STATIONERY,
                 'priority' => TaskPriority::MEDIUM,
-                'is_completed' => true,
-                'deadline' => '2024-11-30',
+                'deadline' => '2025-09-30',
                 'sort_order' => 15
             ],
 
-            // Gifts tasks
+            // Gifts
             [
-                'title' => 'Doorprit (Lelaki)',
-                'description' => 'Gifts for groom\'s family and guests',
+                'title' => 'Doorgift (Lelaki)',
+                'description' => 'Hadiah untuk tetamu pihak lelaki',
                 'category' => WeddingCategory::GIFTS,
                 'priority' => TaskPriority::MEDIUM,
-                'is_completed' => true,
-                'deadline' => '2024-12-20',
+                'deadline' => '2025-12-20',
                 'sort_order' => 16
             ],
             [
-                'title' => 'Ahwa Hituah - Bunga Toh Imam',
-                'description' => 'Traditional ceremonial flowers and gifts',
+                'title' => 'Doorgift (Perempuan)',
+                'description' => 'Hadiah untuk tetamu pihak perempuan',
                 'category' => WeddingCategory::GIFTS,
                 'priority' => TaskPriority::MEDIUM,
-                'is_completed' => true,
-                'deadline' => '2024-12-24',
+                'deadline' => '2025-12-20',
                 'sort_order' => 17
+            ],
+            [
+                'title' => 'Akad Nikah - Bayaran Tok Imam',
+                'description' => 'Hadiah tradisional untuk tok imam dan orang penting',
+                'category' => WeddingCategory::GIFTS,
+                'priority' => TaskPriority::MEDIUM,
+                'deadline' => '2025-12-24',
+                'sort_order' => 18
             ]
         ];
 
         foreach ($tasks as $task) {
-            WeddingTask::create($task);
+            WeddingTask::create(array_merge([
+                'is_completed' => false
+            ], $task));
         }
     }
 }

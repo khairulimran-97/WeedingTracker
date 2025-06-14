@@ -15,7 +15,8 @@ class WeddingController extends Controller
     public function dashboard()
     {
         $settings = WeddingSettings::current();
-        $tasks = WeddingTask::orderBy('sort_order')
+        $tasks = WeddingTask::orderBy('id', 'asc')
+            ->orderBy('sort_order')
             ->orderByPriority()
             ->orderBy('deadline')
             ->orderBy('created_at')
@@ -40,7 +41,8 @@ class WeddingController extends Controller
     public function progress()
     {
         $settings = WeddingSettings::current();
-        $tasks = WeddingTask::orderBy('sort_order')
+        $tasks = WeddingTask::orderBy('id', 'asc')
+            ->orderBy('sort_order')
             ->orderByPriority()
             ->orderBy('deadline')
             ->orderBy('created_at')
@@ -68,7 +70,7 @@ class WeddingController extends Controller
             'is_completed' => !$task->is_completed
         ]);
 
-        return back()->with('message', 'Task updated successfully!');
+        return back()->with('success', 'Task updated successfully!');
     }
 
     public function updateTask(Request $request, WeddingTask $task)
@@ -84,7 +86,7 @@ class WeddingController extends Controller
 
         $task->update($validated);
 
-        return back()->with('message', 'Task updated successfully!');
+        return back()->with('success', 'Task updated successfully!');
     }
 
     public function createTask(Request $request)
@@ -100,14 +102,14 @@ class WeddingController extends Controller
 
         WeddingTask::create($validated);
 
-        return back()->with('message', 'Task created successfully!');
+        return back()->with('success', 'Task created successfully!');
     }
 
     public function deleteTask(WeddingTask $task)
     {
         $task->delete();
 
-        return back()->with('message', 'Task deleted successfully!');
+        return back()->with('success', 'Task deleted successfully!');
     }
 
     public function updateSettings(Request $request)
@@ -123,7 +125,7 @@ class WeddingController extends Controller
         $settings = WeddingSettings::current();
         $settings->update($validated);
 
-        return back()->with('message', 'Settings updated successfully!');
+        return back()->with('success', 'Settings updated successfully!');
     }
 
     public function getCategories()

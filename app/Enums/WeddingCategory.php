@@ -18,16 +18,16 @@ enum WeddingCategory: string
     public function label(): string
     {
         return match ($this) {
-            self::LEGAL => 'Legal',
-            self::ATTIRE => 'Attire',
-            self::JEWELRY => 'Jewelry',
-            self::SERVICES => 'Services',
-            self::FOOD => 'Food',
-            self::DECORATION => 'Decoration',
-            self::STATIONERY => 'Stationery',
-            self::GIFTS => 'Gifts',
-            self::VENUE => 'Venue',
-            self::PHOTOGRAPHY => 'Photography',
+            self::LEGAL => 'Majlis Agama',
+            self::ATTIRE => 'Pakaian',
+            self::JEWELRY => 'Barang Kemas',
+            self::SERVICES => 'Perkhidmatan',
+            self::FOOD => 'Makanan & Minuman',
+            self::DECORATION => 'Dekorasi',
+            self::STATIONERY => 'Percetakan & Kad',
+            self::GIFTS => 'Hadiah & Cenderamata',
+            self::VENUE => 'Lokasi Majlis',
+            self::PHOTOGRAPHY => 'Fotografi',
         };
     }
 

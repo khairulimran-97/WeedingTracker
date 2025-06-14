@@ -127,7 +127,7 @@ class WeddingTask extends Model
                     'category' => $item->category,
                 ]];
             })
-            ->toArray(); // Fix: Convert Collection to array
+            ->toArray();
     }
 
     public static function getPriorityStats(): array
@@ -143,6 +143,6 @@ class WeddingTask extends Model
                     'priority' => $item->priority,
                 ]];
             })
-            ->toArray(); // Fix: Convert Collection to array
+            ->toArray();
     }
 }
