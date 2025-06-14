@@ -126,7 +126,8 @@ class WeddingTask extends Model
                     'remaining' => $item->total - $item->completed,
                     'category' => $item->category,
                 ]];
-            });
+            })
+            ->toArray(); // Fix: Convert Collection to array
     }
 
     public static function getPriorityStats(): array
@@ -141,6 +142,7 @@ class WeddingTask extends Model
                     'remaining' => $item->total - $item->completed,
                     'priority' => $item->priority,
                 ]];
-            });
+            })
+            ->toArray(); // Fix: Convert Collection to array
     }
 }
