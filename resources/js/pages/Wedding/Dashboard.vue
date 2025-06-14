@@ -1,27 +1,31 @@
 <script setup lang="ts">
 import { Head, useForm } from '@inertiajs/vue3'
 import { computed, ref } from 'vue'
-import AppLayout from '@/layouts/AppLayout.vue'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Badge } from '@/components/ui/badge'
-import { Progress } from '@/components/ui/progress'
-import { Heart, Calendar, Clock, Plus, Edit, Trash2 } from 'lucide-vue-next'
-import type { WeddingPageProps, WeddingTask, TaskFormData } from '@/types'
+import { Plus, Edit, Trash2, Settings, Sun, Moon, Monitor } from 'lucide-vue-next'
+import { useAppearance } from '@/composables/useAppearance'
+import type { WeddingPageProps, WeddingTask, TaskFormData, SettingsFormData } from '@/types'
 
 type Props = WeddingPageProps
 
 const props = defineProps<Props>()
 
+const { appearance, updateAppearance } = useAppearance()
+
 const selectedCategory = ref('all')
 const showTaskDialog = ref(false)
+const showSettingsDialog = ref(false)
 const editingTask = ref<WeddingTask | null>(null)
+const toggleTaskId = ref<number | null>(null)
 
 const taskForm = useForm<TaskFormData>({
     title: '',
@@ -32,6 +36,14 @@ const taskForm = useForm<TaskFormData>({
     notes: []
 })
 
+const settingsForm = useForm<SettingsFormData>({
+    bride_name: props.settings.bride_name,
+    groom_name: props.settings.groom_name,
+    hashtag: props.settings.hashtag,
+    wedding_date: props.settings.wedding_date,
+    theme_color: props.settings.theme_color
+})
+
 const filteredTasks = computed(() => {
     if (selectedCategory.value === 'all') {
         return props.tasks
@@ -39,8 +51,26 @@ const filteredTasks = computed(() => {
     return props.tasks.filter(task => task.category === selectedCategory.value)
 })
 
-const toggleTask = (task: WeddingTask) => {
-    useForm({}).post(`/tasks/${task.id}/toggle`)
+const toggleTask = (task: WeddingTask, checked: boolean) => {
+    // Prevent multiple simultaneous requests
+    if (toggleTaskId.value === task.id) return
+
+    toggleTaskId.value = task.id
+    const originalStatus = task.is_completed
+
+    // Optimistically update the UI
+    task.is_completed = checked
+
+    useForm({}).post(`/tasks/${task.id}/toggle`, {
+        preserveScroll: true,
+        onFinish: () => {
+            toggleTaskId.value = null
+        },
+        onError: () => {
+            // Revert on error
+            task.is_completed = originalStatus
+        }
+    })
 }
 
 const openTaskDialog = (task?: WeddingTask) => {
@@ -55,6 +85,8 @@ const openTaskDialog = (task?: WeddingTask) => {
     } else {
         editingTask.value = null
         taskForm.reset()
+        taskForm.category = 'legal'
+        taskForm.priority = 'medium'
     }
     showTaskDialog.value = true
 }
@@ -65,6 +97,7 @@ const saveTask = () => {
             onSuccess: () => {
                 showTaskDialog.value = false
                 taskForm.reset()
+                editingTask.value = null
             }
         })
     } else {
@@ -77,9 +110,19 @@ const saveTask = () => {
     }
 }
 
+const saveSettings = () => {
+    settingsForm.patch('/wedding/settings', {
+        onSuccess: () => {
+            showSettingsDialog.value = false
+        }
+    })
+}
+
 const deleteTask = (task: WeddingTask) => {
     if (confirm('Are you sure you want to delete this task?')) {
-        useForm({}).delete(`/tasks/${task.id}`)
+        useForm({}).delete(`/tasks/${task.id}`, {
+            preserveScroll: true
+        })
     }
 }
 
@@ -95,242 +138,359 @@ const formatDate = (dateString: string) => {
 <template>
     <Head title="Wedding Dashboard" />
 
-    <AppLayout>
-        <div class="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-red-50">
-            <!-- Header Section -->
-            <div class="relative overflow-hidden bg-gradient-to-r from-rose-400 via-pink-400 to-red-400 px-4 py-12 text-white">
-                <div class="absolute inset-0 bg-black/10"></div>
-                <div class="relative mx-auto max-w-4xl text-center">
-                    <div class="mb-4 flex items-center justify-center gap-2">
-                        <Heart class="h-8 w-8 animate-pulse" fill="currentColor" />
-                        <h1 class="text-4xl font-bold tracking-tight lg:text-6xl">
-                            {{ settings.couple_name }}
-                        </h1>
-                        <Heart class="h-8 w-8 animate-pulse" fill="currentColor" />
-                    </div>
-                    <p class="text-xl font-medium opacity-90">{{ settings.hashtag }}</p>
-                    <div class="mt-6 flex items-center justify-center gap-2 text-lg">
-                        <Calendar class="h-5 w-5" />
-                        <span>{{ formatDate(settings.wedding_date) }}</span>
-                        <span v-if="!settings.is_wedding_past" class="mx-2">•</span>
-                        <span v-if="settings.is_wedding_today" class="font-bold text-yellow-300 animate-pulse">
-                            🎉 Wedding Day! 🎉
-                        </span>
-                        <span v-else-if="!settings.is_wedding_past" class="font-semibold">
-                            {{ settings.days_until_wedding }} days to go!
-                        </span>
-                    </div>
-                </div>
+    <div class="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
+        <!-- Header with Settings Menu -->
+        <div class="mb-6 flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                    Wedding Tasks - {{ settings.couple_name }}
+                </h1>
+                <p class="text-gray-600 dark:text-gray-400">
+                    {{ stats.completed }}/{{ stats.total }} tasks completed ({{ stats.percentage }}%) •
+                    Wedding Date: {{ formatDate(settings.wedding_date) }}
+                    <span v-if="!settings.is_wedding_past"> • {{ settings.days_until_wedding }} days to go</span>
+                </p>
             </div>
 
-            <!-- Progress Overview -->
-            <div class="mx-auto max-w-6xl px-4 py-8">
-                <Card class="mb-8 border-rose-200 bg-white/80 backdrop-blur-sm">
-                    <CardHeader class="text-center">
-                        <CardTitle class="text-2xl text-gray-800">Wedding Preparation Progress</CardTitle>
-                        <p class="text-gray-600">Keep track of your special day preparations</p>
-                    </CardHeader>
-                    <CardContent>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                            <div class="text-center">
-                                <div class="text-3xl font-bold text-green-600">{{ stats.completed }}</div>
-                                <div class="text-sm text-gray-600">Completed</div>
+            <!-- Settings Menu -->
+            <DropdownMenu>
+                <DropdownMenuTrigger as-child>
+                    <Button variant="outline" size="sm">
+                        <Settings class="h-4 w-4 mr-2" />
+                        Settings
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" class="w-48">
+                    <DropdownMenuItem @click="showSettingsDialog = true">
+                        <Settings class="h-4 w-4 mr-2" />
+                        Wedding Settings
+                    </DropdownMenuItem>
+                    <DropdownMenuItem @click="updateAppearance('light')">
+                        <Sun class="h-4 w-4 mr-2" />
+                        Light Mode
+                    </DropdownMenuItem>
+                    <DropdownMenuItem @click="updateAppearance('dark')">
+                        <Moon class="h-4 w-4 mr-2" />
+                        Dark Mode
+                    </DropdownMenuItem>
+                    <DropdownMenuItem @click="updateAppearance('system')">
+                        <Monitor class="h-4 w-4 mr-2" />
+                        System
+                    </DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+        </div>
+        <!-- Wedding Settings Dialog -->
+        <Dialog v-model:open="showSettingsDialog">
+            <DialogContent class="max-w-md">
+                <DialogHeader>
+                    <DialogTitle>Wedding Settings</DialogTitle>
+                </DialogHeader>
+                <form @submit.prevent="saveSettings" class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <Label for="bride_name">Bride's Name</Label>
+                            <Input v-model="settingsForm.bride_name" required />
+                        </div>
+                        <div>
+                            <Label for="groom_name">Groom's Name</Label>
+                            <Input v-model="settingsForm.groom_name" required />
+                        </div>
+                    </div>
+                    <div>
+                        <Label for="hashtag">Wedding Hashtag</Label>
+                        <Input v-model="settingsForm.hashtag" placeholder="#CoupleHashtag" />
+                    </div>
+                    <div>
+                        <Label for="wedding_date">Wedding Date</Label>
+                        <Input type="date" v-model="settingsForm.wedding_date" required />
+                    </div>
+                    <div>
+                        <Label for="theme_color">Theme Color</Label>
+                        <Input type="color" v-model="settingsForm.theme_color" />
+                    </div>
+                    <div class="flex justify-end gap-2 pt-4">
+                        <Button type="button" variant="outline" @click="showSettingsDialog = false">
+                            Cancel
+                        </Button>
+                        <Button type="submit" class="bg-rose-500 hover:bg-rose-600" :disabled="settingsForm.processing">
+                            Save Settings
+                        </Button>
+                    </div>
+                </form>
+            </DialogContent>
+        </Dialog>
+
+        <!-- Controls -->
+        <div class="mb-6 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+            <!-- Category Filter -->
+            <div class="flex flex-wrap gap-2">
+                <Button
+                    variant="outline"
+                    size="sm"
+                    :class="[
+                        'border-gray-300 dark:border-gray-600',
+                        selectedCategory === 'all' ? 'bg-rose-100 border-rose-300 dark:bg-rose-900 dark:border-rose-700' : ''
+                    ]"
+                    @click="selectedCategory = 'all'"
+                >
+                    All ({{ stats.total }})
+                </Button>
+                <Button
+                    v-for="category in categories"
+                    :key="category.value"
+                    variant="outline"
+                    size="sm"
+                    :class="[
+                        'border-gray-300 dark:border-gray-600',
+                        selectedCategory === category.value ? 'bg-rose-100 border-rose-300 dark:bg-rose-900 dark:border-rose-700' : ''
+                    ]"
+                    @click="selectedCategory = category.value"
+                >
+                    {{ category.icon }} {{ category.label }}
+                    ({{ categoryStats[category.value]?.total || 0 }})
+                </Button>
+            </div>
+
+            <!-- Add Task Button -->
+            <Dialog v-model:open="showTaskDialog">
+                <DialogTrigger as-child>
+                    <Button @click="openTaskDialog()" class="bg-rose-500 hover:bg-rose-600 text-white">
+                        <Plus class="mr-2 h-4 w-4" />
+                        Add Task
+                    </Button>
+                </DialogTrigger>
+                <DialogContent class="max-w-md">
+                    <DialogHeader>
+                        <DialogTitle>
+                            {{ editingTask ? 'Edit Task' : 'Add New Task' }}
+                        </DialogTitle>
+                    </DialogHeader>
+                    <form @submit.prevent="saveTask" class="space-y-4">
+                        <div>
+                            <Label for="title">Task Title</Label>
+                            <Input
+                                v-model="taskForm.title"
+                                required
+                                placeholder="Enter task title"
+                                :disabled="taskForm.processing"
+                            />
+                        </div>
+                        <div>
+                            <Label for="description">Description</Label>
+                            <Textarea
+                                v-model="taskForm.description"
+                                rows="3"
+                                placeholder="Enter task description (optional)"
+                                :disabled="taskForm.processing"
+                            />
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <Label for="category">Category</Label>
+                                <Select v-model="taskForm.category" :disabled="taskForm.processing">
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select category" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem v-for="cat in categories" :key="cat.value" :value="cat.value">
+                                            {{ cat.icon }} {{ cat.label }}
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
                             </div>
-                            <div class="text-center">
-                                <div class="text-3xl font-bold text-orange-600">{{ stats.remaining }}</div>
-                                <div class="text-sm text-gray-600">Remaining</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="text-3xl font-bold text-rose-600">{{ stats.percentage }}%</div>
-                                <div class="text-sm text-gray-600">Progress</div>
+                            <div>
+                                <Label for="priority">Priority</Label>
+                                <Select v-model="taskForm.priority" :disabled="taskForm.processing">
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select priority" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem v-for="priority in priorities" :key="priority.value" :value="priority.value">
+                                            {{ priority.label }}
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
                             </div>
                         </div>
-                        <div class="space-y-2">
-                            <div class="flex justify-between text-sm text-gray-600">
-                                <span>Overall Progress</span>
-                                <span>{{ stats.percentage }}%</span>
-                            </div>
-                            <Progress :value="stats.percentage" class="h-3" />
+                        <div>
+                            <Label for="deadline">Deadline (Optional)</Label>
+                            <Input
+                                type="date"
+                                v-model="taskForm.deadline"
+                                :disabled="taskForm.processing"
+                            />
                         </div>
-                    </CardContent>
-                </Card>
-
-                <!-- Category Filters -->
-                <div class="mb-6 flex flex-wrap gap-2">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        :class="selectedCategory === 'all' ? 'bg-rose-100 border-rose-300' : ''"
-                        @click="selectedCategory = 'all'"
-                    >
-                        All Tasks ({{ stats.total }})
-                    </Button>
-                    <Button
-                        v-for="category in categories"
-                        :key="category.value"
-                        variant="outline"
-                        size="sm"
-                        :class="selectedCategory === category.value ? 'bg-rose-100 border-rose-300' : ''"
-                        @click="selectedCategory = category.value"
-                    >
-                        {{ category.icon }} {{ category.label }}
-                        ({{ categoryStats[category.value]?.total || 0 }})
-                    </Button>
-                </div>
-
-                <!-- Add Task Button -->
-                <div class="mb-6">
-                    <Dialog v-model:open="showTaskDialog">
-                        <DialogTrigger as-child>
-                            <Button @click="openTaskDialog()" class="bg-rose-500 hover:bg-rose-600">
-                                <Plus class="mr-2 h-4 w-4" />
-                                Add New Task
+                        <div class="flex justify-end gap-2 pt-4">
+                            <Button
+                                type="button"
+                                variant="outline"
+                                @click="showTaskDialog = false"
+                                :disabled="taskForm.processing"
+                            >
+                                Cancel
                             </Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle>
-                                    {{ editingTask ? 'Edit Task' : 'Add New Task' }}
-                                </DialogTitle>
-                            </DialogHeader>
-                            <form @submit.prevent="saveTask" class="space-y-4">
-                                <div>
-                                    <Label for="title">Task Title</Label>
-                                    <Input v-model="taskForm.title" required />
-                                </div>
-                                <div>
-                                    <Label for="description">Description</Label>
-                                    <Textarea v-model="taskForm.description" />
-                                </div>
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <Label for="category">Category</Label>
-                                        <Select v-model="taskForm.category">
-                                            <SelectTrigger>
-                                                <SelectValue />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem v-for="cat in categories" :key="cat.value" :value="cat.value">
-                                                    {{ cat.icon }} {{ cat.label }}
-                                                </SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                    </div>
-                                    <div>
-                                        <Label for="priority">Priority</Label>
-                                        <Select v-model="taskForm.priority">
-                                            <SelectTrigger>
-                                                <SelectValue />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem v-for="priority in priorities" :key="priority.value" :value="priority.value">
-                                                    {{ priority.label }}
-                                                </SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                    </div>
-                                </div>
-                                <div>
-                                    <Label for="deadline">Deadline</Label>
-                                    <Input type="date" v-model="taskForm.deadline" />
-                                </div>
-                                <div class="flex justify-end gap-2">
-                                    <Button type="button" variant="outline" @click="showTaskDialog = false">
-                                        Cancel
-                                    </Button>
-                                    <Button type="submit" class="bg-rose-500 hover:bg-rose-600">
-                                        {{ editingTask ? 'Update' : 'Create' }} Task
-                                    </Button>
-                                </div>
-                            </form>
-                        </DialogContent>
-                    </Dialog>
-                </div>
+                            <Button
+                                type="submit"
+                                class="bg-rose-500 hover:bg-rose-600 text-white"
+                                :disabled="taskForm.processing"
+                            >
+                                {{ taskForm.processing ? 'Saving...' : (editingTask ? 'Update Task' : 'Create Task') }}
+                            </Button>
+                        </div>
+                    </form>
+                </DialogContent>
+            </Dialog>
+        </div>
 
-                <!-- Tasks Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <Card
-                        v-for="task in filteredTasks"
-                        :key="task.id"
-                        :class="[
-                            'transition-all duration-200 hover:shadow-lg border-l-4',
-                            task.is_completed
-                                ? 'bg-green-50 border-l-green-400 opacity-75'
-                                : 'bg-white border-l-rose-400'
-                        ]"
-                    >
-                        <CardHeader class="pb-3">
-                            <div class="flex items-start justify-between">
-                                <div class="flex items-center gap-2">
+        <!-- Tasks Table -->
+        <Card class="dark:bg-gray-800 dark:border-gray-700">
+            <CardContent class="p-0">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                Status
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                Task
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                Category
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                Priority
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                Deadline
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                Actions
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                        <tr v-for="task in filteredTasks" :key="task.id" :class="[
+                                'hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200',
+                                task.is_completed ? 'opacity-75 bg-green-50/30 dark:bg-green-900/10' : ''
+                            ]">
+                            <!-- Status -->
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
                                     <Checkbox
                                         :checked="task.is_completed"
-                                        @update:checked="() => toggleTask(task)"
+                                        @update:checked="(checked) => toggleTask(task, checked)"
+                                        :disabled="toggleTaskId === task.id"
+                                        class="mr-3 data-[state=checked]:bg-green-600 data-[state=checked]:border-green-600"
                                     />
-                                    <Badge :class="task.category_color" variant="secondary">
-                                        {{ task.category_icon }} {{ task.category_display }}
-                                    </Badge>
+                                    <span :class="[
+                                            'text-sm font-medium transition-all duration-200',
+                                            task.is_completed
+                                                ? 'text-green-600 dark:text-green-400'
+                                                : 'text-gray-500 dark:text-gray-400',
+                                            toggleTaskId === task.id ? 'opacity-50' : ''
+                                        ]">
+                                            {{ toggleTaskId === task.id ? 'Updating...' : (task.is_completed ? 'Completed' : 'Pending') }}
+                                        </span>
                                 </div>
-                                <div class="flex gap-1">
-                                    <Button size="sm" variant="ghost" @click="openTaskDialog(task)">
-                                        <Edit class="h-3 w-3" />
-                                    </Button>
-                                    <Button size="sm" variant="ghost" @click="deleteTask(task)">
-                                        <Trash2 class="h-3 w-3" />
-                                    </Button>
+                            </td>
+
+                            <!-- Task -->
+                            <td class="px-6 py-4">
+                                <div class="max-w-xs">
+                                    <div :class="[
+                                            'text-sm font-medium transition-all duration-200',
+                                            task.is_completed
+                                                ? 'line-through text-gray-500 dark:text-gray-400'
+                                                : 'text-gray-900 dark:text-gray-100'
+                                        ]">
+                                        {{ task.title }}
+                                    </div>
+                                    <div v-if="task.description" :class="[
+                                            'text-sm mt-1 truncate transition-all duration-200',
+                                            task.is_completed
+                                                ? 'line-through text-gray-400 dark:text-gray-500'
+                                                : 'text-gray-500 dark:text-gray-400'
+                                        ]">
+                                        {{ task.description }}
+                                    </div>
                                 </div>
-                            </div>
-                            <CardTitle :class="task.is_completed ? 'line-through text-gray-500' : ''">
-                                {{ task.title }}
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <p v-if="task.description" class="text-sm text-gray-600 mb-3">
-                                {{ task.description }}
-                            </p>
-                            <div class="flex items-center justify-between text-xs text-gray-500">
-                                <Badge
-                                    :class="task.priority_color"
-                                    variant="outline"
-                                >
+                            </td>
+
+                            <!-- Category -->
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <Badge :class="task.category_color" variant="secondary">
+                                    {{ task.category_icon }} {{ task.category_display }}
+                                </Badge>
+                            </td>
+
+                            <!-- Priority -->
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <Badge :class="task.priority_color" variant="outline">
                                     {{ task.priority_display }}
                                 </Badge>
-                                <div v-if="task.deadline" class="flex items-center gap-1">
-                                    <Clock class="h-3 w-3" />
-                                    {{ formatDate(task.deadline) }}
+                            </td>
+
+                            <!-- Deadline -->
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                {{ task.deadline ? formatDate(task.deadline) : '-' }}
+                            </td>
+
+                            <!-- Actions -->
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <div class="flex items-center gap-2">
+                                    <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        @click="openTaskDialog(task)"
+                                        class="hover:bg-blue-50 dark:hover:bg-blue-900"
+                                    >
+                                        <Edit class="h-4 w-4 text-blue-600" />
+                                    </Button>
+                                    <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        @click="deleteTask(task)"
+                                        class="hover:bg-red-50 dark:hover:bg-red-900"
+                                    >
+                                        <Trash2 class="h-4 w-4 text-red-500" />
+                                    </Button>
                                 </div>
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
 
-                <!-- Completion Message -->
-                <div v-if="stats.percentage === 100" class="mt-12 text-center">
-                    <Card class="mx-auto max-w-2xl border-green-200 bg-gradient-to-r from-green-50 to-emerald-50">
-                        <CardContent class="py-8">
-                            <div class="mb-4 text-6xl">🎉</div>
-                            <h3 class="text-2xl font-bold text-green-800 mb-2">Congratulations!</h3>
-                            <p class="text-green-700">
-                                All wedding preparations are complete! You're ready for your special day, {{ settings.couple_name }}! ♡
-                            </p>
-                        </CardContent>
-                    </Card>
+                    <!-- Empty State -->
+                    <div v-if="filteredTasks.length === 0" class="text-center py-12">
+                        <div class="text-gray-400 dark:text-gray-500 mb-4">
+                            <Plus class="h-12 w-12 mx-auto" />
+                        </div>
+                        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">No tasks found</h3>
+                        <p class="text-gray-500 dark:text-gray-400 mb-4">
+                            {{ selectedCategory === 'all' ? 'Get started by adding your first wedding task.' : 'No tasks in this category yet.' }}
+                        </p>
+                        <Button @click="openTaskDialog()" class="bg-rose-500 hover:bg-rose-600 text-white">
+                            <Plus class="mr-2 h-4 w-4" />
+                            Add Task
+                        </Button>
+                    </div>
                 </div>
-            </div>
+            </CardContent>
+        </Card>
+
+        <!-- Completion Message -->
+        <div v-if="stats.percentage === 100" class="mt-8">
+            <Card class="border-green-200 dark:border-green-700 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900 dark:to-emerald-900">
+                <CardContent class="py-6 text-center">
+                    <div class="text-4xl mb-2">🎉</div>
+                    <h3 class="text-xl font-bold text-green-800 dark:text-green-200 mb-2">All tasks completed!</h3>
+                    <p class="text-green-700 dark:text-green-300">
+                        Congratulations {{ settings.couple_name }}! You're ready for your special day! ♡
+                    </p>
+                </CardContent>
+            </Card>
         </div>
-    </AppLayout>
+    </div>
 </template>
-
-<style scoped>
-.animate-pulse {
-    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-@keyframes pulse {
-    0%, 100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: .5;
-    }
-}
-</style>
