@@ -27,13 +27,31 @@ const showSettingsDialog = ref(false)
 const editingTask = ref<WeddingTask | null>(null)
 const toggleTaskId = ref<number | null>(null)
 
-const taskForm = useForm<TaskFormData>({
+// Create reactive task states for optimistic updates
+const taskStates = ref<Record<number, { is_completed: boolean; updating: boolean }>>({})
+
+// Initialize task states
+const initializeTaskStates = () => {
+    taskStates.value = {}
+    props.tasks.forEach(task => {
+        taskStates.value[task.id] = {
+            is_completed: task.is_completed,
+            updating: false
+        }
+    })
+}
+
+// Initialize on component mount
+initializeTaskStates()
+
+const taskForm = useForm<TaskFormData & { is_completed: boolean }>({
     title: '',
     description: '',
     category: 'legal',
     priority: 'medium',
     deadline: '',
-    notes: []
+    notes: [],
+    is_completed: false
 })
 
 const settingsForm = useForm<SettingsFormData>({
@@ -53,24 +71,32 @@ const filteredTasks = computed(() => {
 
 const toggleTask = (task: WeddingTask, checked: boolean) => {
     // Prevent multiple simultaneous requests
-    if (toggleTaskId.value === task.id) return
+    if (taskStates.value[task.id]?.updating) return
 
-    toggleTaskId.value = task.id
-    const originalStatus = task.is_completed
+    // Update reactive state immediately for instant feedback
+    if (!taskStates.value[task.id]) {
+        taskStates.value[task.id] = { is_completed: task.is_completed, updating: false }
+    }
 
-    // Optimistically update the UI
-    task.is_completed = checked
+    const originalStatus = taskStates.value[task.id].is_completed
+    taskStates.value[task.id].is_completed = checked
+    taskStates.value[task.id].updating = true
 
     useForm({}).post(`/tasks/${task.id}/toggle`, {
         preserveScroll: true,
         onFinish: () => {
-            toggleTaskId.value = null
+            taskStates.value[task.id].updating = false
         },
         onError: () => {
             // Revert on error
-            task.is_completed = originalStatus
+            taskStates.value[task.id].is_completed = originalStatus
+            taskStates.value[task.id].updating = false
         }
     })
+}
+
+const getTaskState = (task: WeddingTask) => {
+    return taskStates.value[task.id] || { is_completed: task.is_completed, updating: false }
 }
 
 const openTaskDialog = (task?: WeddingTask) => {
@@ -82,11 +108,13 @@ const openTaskDialog = (task?: WeddingTask) => {
         taskForm.priority = task.priority
         taskForm.deadline = task.deadline || ''
         taskForm.notes = task.notes || []
+        taskForm.is_completed = getTaskState(task).is_completed
     } else {
         editingTask.value = null
         taskForm.reset()
         taskForm.category = 'legal'
         taskForm.priority = 'medium'
+        taskForm.is_completed = false
     }
     showTaskDialog.value = true
 }
@@ -98,6 +126,8 @@ const saveTask = () => {
                 showTaskDialog.value = false
                 taskForm.reset()
                 editingTask.value = null
+                // Reinitialize task states after successful update
+                initializeTaskStates()
             }
         })
     } else {
@@ -105,6 +135,8 @@ const saveTask = () => {
             onSuccess: () => {
                 showTaskDialog.value = false
                 taskForm.reset()
+                // Reinitialize task states after successful creation
+                initializeTaskStates()
             }
         })
     }
@@ -285,6 +317,19 @@ const formatDate = (dateString: string) => {
                                 :disabled="taskForm.processing"
                             />
                         </div>
+
+                        <!-- Task Status - only show when editing -->
+                        <div v-if="editingTask" class="flex items-center space-x-3">
+                            <Checkbox
+                                v-model:checked="taskForm.is_completed"
+                                :disabled="taskForm.processing"
+                                class="data-[state=checked]:bg-green-600 data-[state=checked]:border-green-600"
+                            />
+                            <Label class="text-sm font-medium">
+                                Mark as {{ taskForm.is_completed ? 'completed' : 'incomplete' }}
+                            </Label>
+                        </div>
+
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <Label for="category">Category</Label>
@@ -373,25 +418,25 @@ const formatDate = (dateString: string) => {
                         <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                         <tr v-for="task in filteredTasks" :key="task.id" :class="[
                                 'hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200',
-                                task.is_completed ? 'opacity-75 bg-green-50/30 dark:bg-green-900/10' : ''
+                                getTaskState(task).is_completed ? 'opacity-75 bg-green-50/30 dark:bg-green-900/10' : ''
                             ]">
                             <!-- Status -->
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <Checkbox
-                                        :checked="task.is_completed"
+                                        :checked="getTaskState(task).is_completed"
                                         @update:checked="(checked) => toggleTask(task, checked)"
-                                        :disabled="toggleTaskId === task.id"
+                                        :disabled="getTaskState(task).updating"
                                         class="mr-3 data-[state=checked]:bg-green-600 data-[state=checked]:border-green-600"
                                     />
                                     <span :class="[
                                             'text-sm font-medium transition-all duration-200',
-                                            task.is_completed
+                                            getTaskState(task).is_completed
                                                 ? 'text-green-600 dark:text-green-400'
                                                 : 'text-gray-500 dark:text-gray-400',
-                                            toggleTaskId === task.id ? 'opacity-50' : ''
+                                            getTaskState(task).updating ? 'opacity-50' : ''
                                         ]">
-                                            {{ toggleTaskId === task.id ? 'Updating...' : (task.is_completed ? 'Completed' : 'Pending') }}
+                                            {{ getTaskState(task).updating ? 'Updating...' : (getTaskState(task).is_completed ? 'Completed' : 'Pending') }}
                                         </span>
                                 </div>
                             </td>
@@ -401,7 +446,7 @@ const formatDate = (dateString: string) => {
                                 <div class="max-w-xs">
                                     <div :class="[
                                             'text-sm font-medium transition-all duration-200',
-                                            task.is_completed
+                                            getTaskState(task).is_completed
                                                 ? 'line-through text-gray-500 dark:text-gray-400'
                                                 : 'text-gray-900 dark:text-gray-100'
                                         ]">
@@ -409,7 +454,7 @@ const formatDate = (dateString: string) => {
                                     </div>
                                     <div v-if="task.description" :class="[
                                             'text-sm mt-1 truncate transition-all duration-200',
-                                            task.is_completed
+                                            getTaskState(task).is_completed
                                                 ? 'line-through text-gray-400 dark:text-gray-500'
                                                 : 'text-gray-500 dark:text-gray-400'
                                         ]">
