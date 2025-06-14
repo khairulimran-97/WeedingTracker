@@ -116,6 +116,12 @@ const handleCategoryChange = () => {
     }, 300)
 }
 
+// New function to handle countdown click and navigate to taaruf
+const handleCountdownClick = () => {
+    handleCardClick('countdown')
+    window.location.href = '/taaruf'
+}
+
 const toggleTaskCompletion = (task: any) => {
     // Prevent multiple rapid clicks
     if (togglingTasks.value.has(task.id)) {
@@ -192,8 +198,8 @@ const toggleTaskCompletion = (task: any) => {
                     </div>
                 </div>
 
-                <!-- Enhanced Countdown -->
-                <div v-if="!countdown.isToday && !settings.is_wedding_past" class="bg-white/20 backdrop-blur-sm rounded-2xl p-4 sm:p-6 mx-4 sm:mx-8 cursor-pointer hover:bg-white/30 transition-all duration-300" @click="handleCardClick('countdown')">
+                <!-- Enhanced Countdown with Taaruf Link -->
+                <div v-if="!countdown.isToday && !settings.is_wedding_past" class="bg-white/20 backdrop-blur-sm rounded-2xl p-4 sm:p-6 mx-4 sm:mx-8 cursor-pointer hover:bg-white/30 transition-all duration-300 transform hover:scale-105" @click="handleCountdownClick">
                     <p class="text-sm sm:text-base font-medium mb-3 sm:mb-4 opacity-90">Our special day countdown</p>
                     <div class="grid grid-cols-4 gap-2 sm:gap-4">
                         <div class="text-center hover:scale-110 transition-transform duration-200 cursor-pointer" @click.stop="handleCardClick('countdown-days')">
@@ -213,11 +219,18 @@ const toggleTaskCompletion = (task: any) => {
                             <div class="text-xs sm:text-sm opacity-80">Seconds</div>
                         </div>
                     </div>
+                    <!-- Added visual indicator that countdown is clickable -->
+                    <div class="mt-3 sm:mt-4 text-xs sm:text-sm opacity-70 font-medium">
+                        Click to learn more about our journey ↗
+                    </div>
                 </div>
 
-                <div v-else-if="countdown.isToday || settings.is_wedding_today" class="bg-gradient-to-r from-yellow-300 to-orange-300 text-orange-800 rounded-2xl p-4 sm:p-6 mx-4 sm:mx-8 animate-bounce">
+                <div v-else-if="countdown.isToday || settings.is_wedding_today" class="bg-gradient-to-r from-yellow-300 to-orange-300 text-orange-800 rounded-2xl p-4 sm:p-6 mx-4 sm:mx-8 animate-bounce cursor-pointer hover:scale-105 transition-transform duration-300" @click="handleCountdownClick">
                     <div class="text-2xl sm:text-4xl font-bold">🎉 Wedding Day! 🎉</div>
                     <p class="text-sm sm:text-base mt-2">Today is your special day!</p>
+                    <div class="mt-2 text-xs sm:text-sm opacity-70 font-medium">
+                        Click to see our story ↗
+                    </div>
                 </div>
             </div>
         </div>
@@ -412,7 +425,6 @@ const toggleTaskCompletion = (task: any) => {
         </div>
     </div>
 </template>
-
 <style scoped>
 .animate-heartbeat {
     animation: heartbeat 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
