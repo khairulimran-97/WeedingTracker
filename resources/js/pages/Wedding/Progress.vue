@@ -262,7 +262,7 @@ const toggleTaskCompletion = (task: any) => {
                             <span>Overall Progress</span>
                             <span>{{ stats.percentage }}%</span>
                         </div>
-                        <Progress :value="stats.percentage" class="h-3 bg-gray-200" />
+                        <Progress :model-value="stats.percentage" class="h-3 bg-rose-100" />
                     </div>
                 </CardContent>
             </Card>
@@ -274,7 +274,7 @@ const toggleTaskCompletion = (task: any) => {
                         v-model="selectedCategory"
                         @change="handleCategoryChange"
                         :class="[
-                            'w-full px-4 py-3 pr-10 text-sm font-medium bg-white/90 border-2 border-rose-200 rounded-xl shadow-lg focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-200 transition-all duration-200 appearance-none cursor-pointer hover:bg-white hover:shadow-xl active:scale-95',
+                            'w-full px-4 py-3 pr-10 text-sm font-medium bg-white/90 text-gray-800 border-2 border-rose-200 rounded-xl shadow-lg focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-200 transition-all duration-200 appearance-none cursor-pointer hover:bg-white hover:shadow-xl active:scale-95',
                             clickedCategory ? 'animate-category-click' : ''
                         ]"
                     >
