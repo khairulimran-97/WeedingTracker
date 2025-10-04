@@ -345,14 +345,16 @@
         <p id="beraya-date"><strong>Beraya di Melor:</strong> April 2, 2025</p>
         <p id="merisik-date"><strong>Merisik:</strong> May 2, 2025</p>
         <p id="engagement-date"><strong>Engagement:</strong> June 3, 2025</p>
-        <p id="ijab-qabul-date"><strong>Ijab & Qabul:</strong> December 26, 2025</p>
-        <p id="reception1-date"><strong>1st Reception:</strong> December 27, 2025</p>
+        <p id="reception1-date"><strong>Ijab & Qabul:</strong> December 27, 2025</p>
         <p id="reception2-date"><strong>2nd Reception:</strong> December 29, 2025</p>
     </div>
 
-    <!-- Ijab & Qabul Countdown -->
+    <!-- Ijab & Qabul + 1st Reception Countdown -->
     <div class="countdown-section ijab-qabul" id="ijab-countdown">
-        <h2 class="countdown-title ijab-qabul">Countdown to Ijab & Qabul 💍</h2>
+        <h2 class="countdown-title ijab-qabul">Countdown to Our Wedding 💍🎉</h2>
+        <p style="font-size: 1rem; margin-top: 0.5rem; margin-bottom: 1rem; color: var(--text-color); opacity: 0.8;">
+            Ijab & Qabul + 1st Reception (Dec 27)
+        </p>
         <div class="countdown-display">
             <div class="countdown-row">
                 <div class="countdown-item">
@@ -375,37 +377,6 @@
                 </div>
                 <div class="countdown-item">
                     <div class="countdown-number" id="ijab-seconds-count">0</div>
-                    <div class="countdown-label">Seconds</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 1st Reception Countdown -->
-    <div class="countdown-section reception1" id="reception1-countdown">
-        <h2 class="countdown-title reception">Countdown to 1st Reception 🎉</h2>
-        <div class="countdown-display">
-            <div class="countdown-row">
-                <div class="countdown-item">
-                    <div class="countdown-number" id="rec1-months-count">0</div>
-                    <div class="countdown-label">Months</div>
-                </div>
-                <div class="countdown-item">
-                    <div class="countdown-number" id="rec1-days-count">0</div>
-                    <div class="countdown-label">Days</div>
-                </div>
-                <div class="countdown-item">
-                    <div class="countdown-number" id="rec1-hours-count">0</div>
-                    <div class="countdown-label">Hours</div>
-                </div>
-            </div>
-            <div class="countdown-row">
-                <div class="countdown-item">
-                    <div class="countdown-number" id="rec1-minutes-count">0</div>
-                    <div class="countdown-label">Minutes</div>
-                </div>
-                <div class="countdown-item">
-                    <div class="countdown-number" id="rec1-seconds-count">0</div>
                     <div class="countdown-label">Seconds</div>
                 </div>
             </div>
@@ -454,7 +425,6 @@
         beraya: new Date('2025-04-02'),
         merisik: new Date('2025-05-02'),
         engagement: new Date('2025-06-03T00:00:00+08:00'),
-        ijabQabul: new Date('2025-12-26T00:00:00+08:00'),
         reception1: new Date('2025-12-27T00:00:00+08:00'),
         reception2: new Date('2025-12-29T00:00:00+08:00')
     };
@@ -539,8 +509,7 @@
     }
 
     function updateAllCountdowns() {
-        updateCountdown(events.ijabQabul, 'ijab', 'ijab-countdown', 'Ijab & Qabul');
-        updateCountdown(events.reception1, 'rec1', 'reception1-countdown', '1st Reception');
+        updateCountdown(events.reception1, 'ijab', 'ijab-countdown', 'Our Wedding');
         updateCountdown(events.reception2, 'rec2', 'reception2-countdown', '2nd Reception');
     }
 
