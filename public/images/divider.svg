@@ -1,0 +1,13 @@
+<svg width="400" height="20" viewBox="0 0 400 20" xmlns="http://www.w3.org/2000/svg">
+  <!-- Left line -->
+  <line x1="0" y1="10" x2="150" y2="10" stroke="#d4a574" stroke-width="1"/>
+
+  <!-- Center ornament -->
+  <circle cx="175" cy="10" r="3" fill="#d4a574"/>
+  <circle cx="200" cy="10" r="5" fill="#d4a574"/>
+  <polygon points="200,5 203,10 200,15 197,10" fill="#8B6F47"/>
+  <circle cx="225" cy="10" r="3" fill="#d4a574"/>
+
+  <!-- Right line -->
+  <line x1="250" y1="10" x2="400" y2="10" stroke="#d4a574" stroke-width="1"/>
+</svg>

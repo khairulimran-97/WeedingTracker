@@ -1,17 +1,23 @@
 <?php
 
 use App\Http\Controllers\WeddingController;
+use App\Http\Controllers\WishController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/persiapan', [WeddingController::class, 'progress'])->name('wedding.progress');
 Route::post('/tasks/{task}/toggle', [WeddingController::class, 'toggleTask'])->name('tasks.toggle');
 Route::get('/taaruf', function () {return view('taaruf');})->name('wedding.taaruf');
+Route::get('/invitation', function () {return view('invitation');})->name('wedding.invitation');
 //Route::get('/tunang', function () {return view('tunang');})->name('wedding.tunang');
 Route::redirect('/taaruf.html', '/taaruf');
 
 
 Route::get('/api/categories', [WeddingController::class, 'getCategories'])->name('api.categories');
 Route::get('/api/priorities', [WeddingController::class, 'getPriorities'])->name('api.priorities');
+
+// Wishes routes
+Route::get('/api/wishes', [WishController::class, 'index'])->name('wishes.index');
+Route::post('/api/wishes', [WishController::class, 'store'])->name('wishes.store');
 
 Route::get('/', function () {
     if (auth()->check()) {
