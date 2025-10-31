@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/persiapan', [WeddingController::class, 'progress'])->name('wedding.progress');
 Route::post('/tasks/{task}/toggle', [WeddingController::class, 'toggleTask'])->name('tasks.toggle');
 Route::get('/taaruf', function () {return view('taaruf');})->name('wedding.taaruf');
-Route::get('/invitation', function () {return view('invitation');})->name('wedding.invitation');
+Route::get('/', function () {return view('invitation');})->name('wedding.invitation');
 //Route::get('/tunang', function () {return view('tunang');})->name('wedding.tunang');
 Route::redirect('/taaruf.html', '/taaruf');
 
@@ -18,13 +18,6 @@ Route::get('/api/priorities', [WeddingController::class, 'getPriorities'])->name
 // Wishes routes
 Route::get('/api/wishes', [WishController::class, 'index'])->name('wishes.index');
 Route::post('/api/wishes', [WishController::class, 'store'])->name('wishes.store');
-
-Route::get('/', function () {
-    if (auth()->check()) {
-        return redirect()->route('dashboard');
-    }
-    return redirect()->route('wedding.progress');
-})->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [WeddingController::class, 'dashboard'])->name('dashboard');
