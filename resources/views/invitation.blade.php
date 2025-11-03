@@ -8,14 +8,14 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <meta name="title" content="The Wedding Of Madihah & Khairul | Saturday 27/12/2025">
-    <meta name="description" content="Dengan penuh kesyukuran kehadrat Illahi, kami mempersilakan anda ke walimatulurus Wan Madihah & Muhammad Khairul Imran. Sabtu, 27 Disember 2025 di 82 Cottage Homestay, Melor, Kelantan.">
+    <meta name="description" content="Walimatulurus Madihah & Khairul. Sabtu, 27 Disember 2025 di 82 Cottage Homestay, Melor, Kelantan. #MadiKhai2025">
     <meta name="keywords" content="wedding,invitation,digital card,kad kahwin,jemputan,madihah,khairul,walimatulurus">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="The Wedding Of Madihah & Khairul | Saturday 27/12/2025">
-    <meta property="og:description" content="Dengan penuh kesyukuran kehadrat Illahi, kami mempersilakan anda ke walimatulurus Wan Madihah & Muhammad Khairul Imran. Sabtu, 27 Disember 2025 di 82 Cottage Homestay, Melor, Kelantan.">
+    <meta property="og:description" content="Walimatulurus Madihah & Khairul. Sabtu, 27 Disember 2025 di 82 Cottage Homestay, Melor, Kelantan. #MadiKhai2025">
     <meta property="og:image" content="{{ asset('images/cover-bg.jpeg') }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -26,7 +26,7 @@
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="{{ url()->current() }}">
     <meta property="twitter:title" content="The Wedding Of Madihah & Khairul | Saturday 27/12/2025">
-    <meta property="twitter:description" content="Dengan penuh kesyukuran kehadrat Illahi, kami mempersilakan anda ke walimatulurus Wan Madihah & Muhammad Khairul Imran. Sabtu, 27 Disember 2025 di 82 Cottage Homestay, Melor, Kelantan.">
+    <meta property="twitter:description" content="Walimatulurus Madihah & Khairul. Sabtu, 27 Disember 2025 di 82 Cottage Homestay, Melor, Kelantan. #MadiKhai2025">
     <meta property="twitter:image" content="{{ asset('images/cover-bg.jpeg') }}">
 
     <title>The Wedding Of Madihah & Khairul | Saturday 27/12/2025</title>
