@@ -316,7 +316,7 @@
             right: 0;
             max-width: 530px;
             margin: 0 auto;
-            background: #fdf2d6;
+            background: #e8dcc4;
             backdrop-filter: blur(10px);
             height: 60px;
             display: flex;
@@ -333,6 +333,8 @@
             cursor: pointer;
             text-decoration: none;
             color: #000;
+            padding: 1rem;
+            flex: 1;
         }
 
         .nav-btn img {
@@ -740,7 +742,7 @@
         .wish-popup-bg {
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            background: #fdf2d6;
+            background: #f5ede0;
             height: 100%;
             left: 0;
             position: absolute;
@@ -1481,19 +1483,19 @@
             <h5 class="location-modal-title">Lokasi</h5>
 
             <div class="location-info">
-                <p class="location-venue">Kediaman Pengantin Perempuan</p>
+                <p class="location-venue">82 Cottage Homestay</p>
                 <p class="location-address">
-                    LOT 2143(B), TAMAN TENGKU AHMAD RITHAUDEEN,<br>
-                    16400, MELOR, KOTA BHARU, KELANTAN
+                    Bersebelahan, Taman Tengku Ahmad Rithauddeen,<br>
+                    16400 Melor, Kelantan
                 </p>
             </div>
 
             <div class="location-buttons">
-                <a href="https://maps.app.goo.gl/eWrBfgWiwnPNRaPX7" class="location-btn" target="_blank">
+                <a href="https://maps.app.goo.gl/HXtQLT5bzhRertD58" class="location-btn" target="_blank">
                     <img src="{{ asset('images/icons/google.png') }}" alt="Google Maps">
                     Maps
                 </a>
-                <a href="https://waze.com/ul?q=LOT+2143(B),+TAMAN+TENGKU+AHMAD+RITHAUDEEN,+16400,+MELOR,+KOTA+BHARU,+KELANTAN" class="location-btn" target="_blank">
+                <a href="https://www.waze.com/en/live-map/directions/my/kelantan/melor/82-cottage-homestay?place=ChIJJbeTfKq9tjER6kxx7ry48Yc" class="location-btn" target="_blank">
                     <img src="{{ asset('images/icons/waze.png') }}" alt="Waze">
                     Waze
                 </a>
@@ -1609,10 +1611,10 @@
 
             <div class="event-section animate-on-scroll">
                 <h5 class="section-title">TEMPAT</h5>
-                <p class="venue-name">Kediaman Pengantin Perempuan</p>
+                <p class="venue-name">82 Cottage Homestay</p>
                 <p class="address-text">
-                    LOT 2143(B), TAMAN TENGKU AHMAD RITHAUDEEN,<br>
-                    16400, MELOR, KOTA BHARU, KELANTAN
+                    Bersebelahan, Taman Tengku Ahmad Rithauddeen,<br>
+                    16400 Melor, Kelantan
                 </p>
             </div>
 
