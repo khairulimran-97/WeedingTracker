@@ -327,7 +327,7 @@
             right: 0;
             max-width: 530px;
             margin: 0 auto;
-            background: #e8dcc4;
+            background: #2a4575;
             backdrop-filter: blur(10px);
             height: 60px;
             display: flex;
@@ -343,7 +343,7 @@
             justify-content: center;
             cursor: pointer;
             text-decoration: none;
-            color: #000;
+            color: #fff;
             padding: 1rem;
             flex: 1;
         }
@@ -351,6 +351,7 @@
         .nav-btn img {
             width: 28px;
             height: 28px;
+            filter: brightness(0) invert(1);
         }
 
         .prayer {
@@ -753,7 +754,7 @@
         .wish-popup-bg {
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            background: #f5ede0;
+            background: #2a4575;
             height: 100%;
             left: 0;
             position: absolute;
@@ -774,7 +775,7 @@
             transform: translateX(-50%);
             width: 40px;
             height: 4px;
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.3);
             border-radius: 2px;
         }
 
@@ -786,7 +787,7 @@
             font-size: 15px;
             font-weight: 600;
             margin: 1rem 0 1.5rem;
-            color: #333;
+            color: #fdf2d6;
             text-align: center;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -800,7 +801,7 @@
             font-family: 'Spartan', sans-serif;
             font-size: 12px;
             font-weight: 500;
-            color: #666;
+            color: #ffffff;
             margin-bottom: 0.5rem;
             display: block;
         }
@@ -808,18 +809,19 @@
         .wish-popup-input {
             width: 100%;
             padding: 0.75rem;
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 10px;
             font-family: 'Spartan', sans-serif;
             font-size: 13px;
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
             transition: all 0.3s ease;
         }
 
         .wish-popup-input:focus {
             outline: none;
-            border-color: rgba(0, 0, 0, 0.3);
-            background: rgba(255, 255, 255, 0.8);
+            border-color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 1);
         }
 
         .wish-popup-textarea {
@@ -830,21 +832,21 @@
         .wish-popup-submit {
             width: 100%;
             padding: 0.8rem;
-            background: #333;
-            color: #fff;
+            background: #ffffff;
+            color: #2a4575;
             border: none;
             border-radius: 10px;
             font-family: 'Spartan', sans-serif;
             font-size: 13px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
         .wish-popup-submit:hover {
-            background: #555;
+            background: rgba(255, 255, 255, 0.9);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
         .wish-popup-submit:disabled {
@@ -867,7 +869,7 @@
         .calendar-date-display {
             font-family: 'Spartan', sans-serif;
             font-size: 14px;
-            color: #333;
+            color: #fdf2d6;
             text-align: center;
             margin-bottom: 1.5rem;
         }
@@ -884,14 +886,14 @@
             font-family: 'Spartan', sans-serif;
             font-size: 16px;
             font-weight: 600;
-            color: #333;
+            color: #ffffff;
         }
 
         .calendar-nav-btn {
             background: transparent;
             border: none;
             font-size: 20px;
-            color: #666;
+            color: #ffffff;
             cursor: pointer;
             padding: 0.5rem;
         }
@@ -915,7 +917,7 @@
         .calendar-weekday {
             font-family: 'Spartan', sans-serif;
             font-size: 11px;
-            color: #666;
+            color: #ffffff;
             text-align: center;
             padding: 0.3rem;
         }
@@ -929,7 +931,7 @@
         .calendar-day {
             font-family: 'Spartan', sans-serif;
             font-size: 14px;
-            color: #333;
+            color: #ffffff;
             text-align: center;
             padding: 0.5rem;
             border-radius: 50%;
@@ -937,12 +939,12 @@
         }
 
         .calendar-day.other-month {
-            color: #ccc;
+            color: rgba(255, 255, 255, 0.3);
         }
 
         .calendar-day.selected {
-            background: #333;
-            color: #fff;
+            background: #ffffff;
+            color: #2a4575;
             font-weight: 600;
         }
 
@@ -959,21 +961,22 @@
             gap: 0.5rem;
             padding: 0.8rem;
             background: transparent;
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 10px;
             font-family: 'Spartan', sans-serif;
             font-size: 13px;
             font-weight: 500;
-            color: #333;
+            color: #ffffff;
             text-decoration: none;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
         .calendar-action-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
         .calendar-action-btn svg,
@@ -990,7 +993,7 @@
             font-family: 'Playfair Display', serif;
             font-size: 16px;
             font-weight: 600;
-            color: #333;
+            color: #fdf2d6;
             margin-bottom: 0.5rem;
             text-align: center;
         }
@@ -998,7 +1001,7 @@
         .location-address {
             font-family: 'Spartan', sans-serif;
             font-size: 12px;
-            color: #333;
+            color: #f5ede0;
             line-height: 1.6;
             text-align: center;
         }
@@ -1014,14 +1017,14 @@
             max-width: 150px;
             padding: 0.8rem;
             background: transparent;
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
             text-decoration: none;
-            color: #333;
+            color: #ffffff;
             font-family: 'Spartan', sans-serif;
             font-size: 13px;
             font-weight: 500;
@@ -1029,15 +1032,17 @@
         }
 
         .location-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
         .location-btn img {
             width: 24px;
             height: 24px;
             object-fit: contain;
+            filter: brightness(0) invert(1);
         }
 
         .contact-item {
@@ -1059,7 +1064,7 @@
             font-family: 'Spartan', sans-serif;
             font-size: 15px;
             font-weight: 400;
-            color: #333;
+            color: #f5ede0;
             margin: 0;
             line-height: 1.4;
         }
@@ -1068,7 +1073,7 @@
             font-family: 'Spartan', sans-serif;
             font-size: 11px;
             font-style: italic;
-            color: #666;
+            color: #d4a574;
             margin: 0.2rem 0 0 0;
         }
 
@@ -1094,6 +1099,7 @@
             width: 28px;
             height: 28px;
             object-fit: contain;
+            filter: brightness(0) invert(1);
         }
 
         .contact-btn img[alt="Phone"] {
