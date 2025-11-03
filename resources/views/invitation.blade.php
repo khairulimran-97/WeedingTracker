@@ -20,7 +20,7 @@
 
     <title>The Wedding Of Madihah & Khairul | Saturday 27/12/2025</title>
 
-    <link rel="icon" href="{{ asset('images/favicon.png') }}">
+    <!-- <link rel="icon" href="{{ asset('images/favicon.png') }}"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
@@ -53,7 +53,7 @@
 
         .cover-section {
             min-height: 100vh;
-            background-image: url('https://jemputan.me/images/upload/design/1749715872_WAT029_Cover.png');
+            background-image: url('{{ asset('images/cover-bg.jpeg') }}');
             background-size: cover;
             background-position: center;
             display: flex;
@@ -316,7 +316,7 @@
             right: 0;
             max-width: 530px;
             margin: 0 auto;
-            background: rgba(208, 224, 216, 0.7);
+            background: #fdf2d6;
             backdrop-filter: blur(10px);
             height: 60px;
             display: flex;
@@ -694,35 +694,44 @@
         .location-modal,
         .calendar-popup-modal,
         .wish-popup-modal {
-            display: none;
             position: fixed;
-            bottom: -100%;
+            bottom: 0;
             left: 0;
             width: 100%;
             z-index: 10000;
-            transition: bottom 0.5s ease;
+            pointer-events: none;
         }
 
         .contact-modal.active,
         .location-modal.active,
         .calendar-popup-modal.active,
         .wish-popup-modal.active {
-            display: block;
-            bottom: 60px;
+            pointer-events: auto;
         }
 
         .contact-modal-content,
         .location-modal-content,
         .calendar-popup-content,
         .wish-popup-content {
-            border-radius: 20px;
-            padding: 1rem 1.5rem;
-            margin: 0 2%;
-            width: 96%;
-            max-width: 414px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            position: relative;
+            border-radius: 20px 20px 0 0;
+            padding: 1.5rem;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 530px;
+            position: absolute;
+            bottom: 52px;
+            left: 50%;
             overflow: hidden;
+            pointer-events: auto;
+            transform: translate(-50%, 150%);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .contact-modal.active .contact-modal-content,
+        .location-modal.active .location-modal-content,
+        .calendar-popup-modal.active .calendar-popup-content,
+        .wish-popup-modal.active .wish-popup-content {
+            transform: translate(-50%, 0);
         }
 
         .contact-modal-bg,
@@ -731,7 +740,7 @@
         .wish-popup-bg {
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            background: #d0e0d8b3;
+            background: #fdf2d6;
             height: 100%;
             left: 0;
             position: absolute;
@@ -741,6 +750,21 @@
             z-index: -1;
         }
 
+        .contact-modal-content::before,
+        .location-modal-content::before,
+        .calendar-popup-content::before,
+        .wish-popup-content::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 4px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 2px;
+        }
+
         .contact-modal-title,
         .location-modal-title,
         .calendar-popup-title,
@@ -748,7 +772,7 @@
             font-family: 'Spartan', sans-serif;
             font-size: 15px;
             font-weight: 600;
-            margin: 0 0 1.5rem;
+            margin: 1rem 0 1.5rem;
             color: #333;
             text-align: center;
             text-transform: uppercase;
@@ -2060,7 +2084,7 @@ END:VCALENDAR`;
             const prevBtn = document.getElementById('prevWish');
             const nextBtn = document.getElementById('nextWish');
 
-            if (wishes.length <= 1) return;
+            if (wishes.length <= 1 || !prevBtn || !nextBtn) return;
 
             if (currentWishIndex === 0) {
                 prevBtn.classList.add('disabled');
