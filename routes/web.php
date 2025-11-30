@@ -10,7 +10,7 @@ Route::domain('khairulimran.me')->group(function () {
 });
 
 // Main wedding site routes
-Route::get('/persiapan', [WeddingController::class, 'progress'])->name('wedding.progress');
+//Route::get('/persiapan', [WeddingController::class, 'progress'])->name('wedding.progress');
 Route::post('/tasks/{task}/toggle', [WeddingController::class, 'toggleTask'])->name('tasks.toggle');
 Route::get('/taaruf', function () {return view('taaruf');})->name('wedding.taaruf');
 Route::get('/', function () {return view('invitation');})->name('wedding.invitation');

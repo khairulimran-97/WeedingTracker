@@ -8,14 +8,14 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <meta name="title" content="The Wedding Of Madihah & Khairul | Saturday 27/12/2025">
-    <meta name="description" content="Walimatulurus Madihah & Khairul. Sabtu, 27 Disember 2025 di 82 Cottage Homestay, Melor, Kelantan. #MadiKhai2025">
+    <meta name="description" content="Walimatulurus Madihah & Khairul. Sabtu, 27 Disember 2025 di 82 Cottage Homestay, Melor, Kelantan. #Dihatikhairul">
     <meta name="keywords" content="wedding,invitation,digital card,kad kahwin,jemputan,madihah,khairul,walimatulurus">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="The Wedding Of Madihah & Khairul | Saturday 27/12/2025">
-    <meta property="og:description" content="Walimatulurus Madihah & Khairul. Sabtu, 27 Disember 2025 di 82 Cottage Homestay, Melor, Kelantan. #MadiKhai2025">
+    <meta property="og:description" content="Walimatulurus Madihah & Khairul. Sabtu, 27 Disember 2025 di 82 Cottage Homestay, Melor, Kelantan. #Dihatikhairul">
     <meta property="og:image" content="{{ asset('images/cover-bg.jpeg') }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -26,12 +26,16 @@
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="{{ url()->current() }}">
     <meta property="twitter:title" content="The Wedding Of Madihah & Khairul | Saturday 27/12/2025">
-    <meta property="twitter:description" content="Walimatulurus Madihah & Khairul. Sabtu, 27 Disember 2025 di 82 Cottage Homestay, Melor, Kelantan. #MadiKhai2025">
+    <meta property="twitter:description" content="Walimatulurus Madihah & Khairul. Sabtu, 27 Disember 2025 di 82 Cottage Homestay, Melor, Kelantan. #Dihatikhairul">
     <meta property="twitter:image" content="{{ asset('images/cover-bg.jpeg') }}">
 
     <title>The Wedding Of Madihah & Khairul | Saturday 27/12/2025</title>
 
-    <!-- <link rel="icon" href="{{ asset('images/favicon.png') }}"> -->
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
@@ -1591,7 +1595,7 @@
                 <p class="and-text">&</p>
                 <h1 class="cover-name">KHAIRUL</h1>
                 <p class="cover-date">Sabtu<br>27 Disember 2025</p>
-                <p class="cover-hashtag">#MadiKhai2025</p>
+                <p class="cover-hashtag">#Dihatikhairul</p>
             </div>
         </section>
 
@@ -1665,7 +1669,7 @@
             </div>
 
             <div class="text-center animate-on-scroll">
-                <p style="font-size: 20px; font-family: 'Great Vibes', cursive;">#MadiKhai2025</p>
+                <p style="font-size: 20px; font-family: 'Great Vibes', cursive;">#Dihatikhairul</p>
             </div>
         </div>
 
