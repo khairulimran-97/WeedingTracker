@@ -1652,17 +1652,17 @@
                     <h5 class="section-title" style="margin-bottom: 2rem;">ATURCARA MAJLIS</h5>
 
                     <div class="programme-item">
-                        <div class="programme-time">11:00 AM</div>
+                        <div class="programme-time">12.00 Tengahari</div>
                         <div class="programme-desc">Majlis Bermula</div>
                     </div>
 
                     <div class="programme-item">
-                        <div class="programme-time">12:30 PM</div>
+                        <div class="programme-time">3.00 Petang</div>
                         <div class="programme-desc">Ketibaan Pengantin</div>
                     </div>
 
                     <div class="programme-item">
-                        <div class="programme-time">6:00 PM</div>
+                        <div class="programme-time">4.30 Petang</div>
                         <div class="programme-desc">Majlis Berakhir</div>
                     </div>
                 </div>
