@@ -1760,7 +1760,7 @@
             window.scrollTo(0, 0);
             const openButton = document.getElementById('openButton');
 
-            bgMusic = new Audio('{{ asset('music/kompang-dipalu.mp3') }}');
+            bgMusic = new Audio('{{ asset('music/maher-zain-for-the-rest-of-my-life.mp3') }}');
             bgMusic.loop = true;
             bgMusic.volume = 0.5;
 
