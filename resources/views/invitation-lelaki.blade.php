@@ -1561,7 +1561,7 @@
         <div class="calendar-modal-content">
             <button class="calendar-modal-close" onclick="closeCalendarModal()">&times;</button>
             <h3 class="calendar-modal-title">Isnin, 29 Disember 2025</h3>
-            <p class="calendar-modal-datetime">11:00 PAGI - 6:00 PETANG</p>
+            <p class="calendar-modal-datetime">12.00 Tengahari - 4.30 Petang</p>
             <div class="calendar-buttons">
                 <button class="calendar-btn" onclick="addToAppleCalendar()">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -1646,7 +1646,7 @@
 
             <div class="event-section animate-on-scroll">
                 <h5 class="section-title">MASA</h5>
-                <p class="date-time-info">11:00 PAGI - 6:00 PETANG</p>
+                <p class="date-time-info">12.00 Tengahari - 4.30 Petang</p>
             </div>
 
             <div class="text-center animate-on-scroll">
