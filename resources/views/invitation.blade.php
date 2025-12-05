@@ -215,15 +215,15 @@
 
         .programme-time {
             font-family: 'Spartan', sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            color: #666;
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
             margin-bottom: 0.3rem;
         }
 
         .programme-desc {
             font-family: 'Spartan', sans-serif;
-            font-size: 15px;
+            font-size: 16px;
             color: #333;
         }
 
