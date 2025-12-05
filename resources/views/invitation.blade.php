@@ -1815,7 +1815,7 @@
             setTimeout(() => {
                 isAutoScrolling = true;
                 const scrollHeight = document.body.scrollHeight;
-                const duration = 25000;
+                const duration = 40000;
                 const start = 0;
                 const distance = scrollHeight - start;
                 let startTime = null;
