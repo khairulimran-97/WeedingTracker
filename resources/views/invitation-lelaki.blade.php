@@ -39,7 +39,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=Great+Vibes&family=Lora:wght@400;500;600&family=Cinzel:wght@400;500;600;700&family=Spartan:wght@300;400;500;600&family=Marck+Script&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Tangerine:wght@400;700&family=Playfair+Display:wght@400;500;700&family=Great+Vibes&family=Lora:wght@400;500;600&family=Cinzel:wght@400;500;600;700&family=Spartan:wght@300;400;500;600&family=Marck+Script&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap');
 
         * {
             margin: 0;
@@ -95,12 +95,11 @@
         }
 
         .cover-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 36px;
+            font-family: 'Tangerine', cursive;
+            font-size: 70px;
             margin: 0.5rem 0;
             line-height: 1.2;
             font-weight: 700;
-            font-style: italic;
         }
 
         .and-text {
@@ -1114,7 +1113,7 @@
 
         @media (max-width: 480px) {
             .cover-name {
-                font-size: 28px;
+                font-size: 56px;
             }
 
             .main-content {
@@ -1374,14 +1373,15 @@
         }
 
         .open-button .names {
-            font-family: 'Playfair Display', serif;
-            font-size: 15px;
-            font-weight: 600;
+            font-family: 'Tangerine', cursive;
+            font-size: 28px;
+            font-weight: 700;
             color: #8B6F47;
             text-align: center;
-            line-height: 1.4;
-            margin-bottom: 0.8rem;
-            letter-spacing: 0.5px;
+            line-height: 1.1;
+            margin-top: 6px;
+            margin-right: 15px;
+            margin-bottom: 0.5rem;
         }
 
         .open-button .open-text {
@@ -1586,7 +1586,7 @@
             <div class="center-line"></div>
             <div class="button-container">
                 <button class="open-button" id="openButton" onclick="openInvitation()">
-                    <div class="names">KHAIRUL<br>&<br>MADIHAH</div>
+                    <div class="names">Khairul<br>&<br>Madihah</div>
                     <div class="open-text">OPEN</div>
                 </button>
             </div>
@@ -1597,9 +1597,9 @@
         <section class="cover-section">
             <div class="cover-content">
                 <p class="invitation-type">Walimatulurus</p>
-                <h1 class="cover-name">KHAIRUL</h1>
+                <h1 class="cover-name">Khairul</h1>
                 <p class="and-text">&</p>
-                <h1 class="cover-name">MADIHAH</h1>
+                <h1 class="cover-name">Madihah</h1>
                 <p class="cover-date">Isnin<br>29 Disember 2025</p>
                 <p class="cover-hashtag">#Dihatikhairul</p>
             </div>
