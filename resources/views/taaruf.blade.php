@@ -349,71 +349,6 @@
         <p id="reception2-date"><strong>2nd Reception:</strong> December 29, 2025</p>
     </div>
 
-    <!-- Ijab & Qabul + 1st Reception Countdown -->
-    <div class="countdown-section ijab-qabul" id="ijab-countdown">
-        <h2 class="countdown-title ijab-qabul">Countdown to Our Wedding 💍🎉</h2>
-        <p style="font-size: 1rem; margin-top: 0.5rem; margin-bottom: 1rem; color: var(--text-color); opacity: 0.8;">
-            Ijab & Qabul + 1st Reception (Dec 27)
-        </p>
-        <div class="countdown-display">
-            <div class="countdown-row">
-                <div class="countdown-item">
-                    <div class="countdown-number" id="ijab-months-count">0</div>
-                    <div class="countdown-label">Months</div>
-                </div>
-                <div class="countdown-item">
-                    <div class="countdown-number" id="ijab-days-count">0</div>
-                    <div class="countdown-label">Days</div>
-                </div>
-                <div class="countdown-item">
-                    <div class="countdown-number" id="ijab-hours-count">0</div>
-                    <div class="countdown-label">Hours</div>
-                </div>
-            </div>
-            <div class="countdown-row">
-                <div class="countdown-item">
-                    <div class="countdown-number" id="ijab-minutes-count">0</div>
-                    <div class="countdown-label">Minutes</div>
-                </div>
-                <div class="countdown-item">
-                    <div class="countdown-number" id="ijab-seconds-count">0</div>
-                    <div class="countdown-label">Seconds</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 2nd Reception Countdown -->
-    <div class="countdown-section reception2" id="reception2-countdown">
-        <h2 class="countdown-title reception">Countdown to 2nd Reception 🌟</h2>
-        <div class="countdown-display">
-            <div class="countdown-row">
-                <div class="countdown-item">
-                    <div class="countdown-number" id="rec2-months-count">0</div>
-                    <div class="countdown-label">Months</div>
-                </div>
-                <div class="countdown-item">
-                    <div class="countdown-number" id="rec2-days-count">0</div>
-                    <div class="countdown-label">Days</div>
-                </div>
-                <div class="countdown-item">
-                    <div class="countdown-number" id="rec2-hours-count">0</div>
-                    <div class="countdown-label">Hours</div>
-                </div>
-            </div>
-            <div class="countdown-row">
-                <div class="countdown-item">
-                    <div class="countdown-number" id="rec2-minutes-count">0</div>
-                    <div class="countdown-label">Minutes</div>
-                </div>
-                <div class="countdown-item">
-                    <div class="countdown-number" id="rec2-seconds-count">0</div>
-                    <div class="countdown-label">Seconds</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <p id="current-datetime"></p>
 </div>
 
@@ -474,45 +409,6 @@
         });
     }
 
-    function updateCountdown(eventDate, prefix, sectionId, title) {
-        const now = new Date();
-        const timeDiff = eventDate - now;
-
-        if (timeDiff <= 0) {
-            // Event has passed
-            const section = document.getElementById(sectionId);
-            section.innerHTML = `<div class="completed-message">${title} Day is Here! 🎉✨</div>`;
-            section.classList.add('completed');
-            return false; // Event completed
-        }
-
-        // Calculate time units
-        const totalSeconds = Math.floor(timeDiff / 1000);
-        const seconds = totalSeconds % 60;
-        const totalMinutes = Math.floor(totalSeconds / 60);
-        const minutes = totalMinutes % 60;
-        const totalHours = Math.floor(totalMinutes / 60);
-        const hours = totalHours % 24;
-        const totalDays = Math.floor(totalHours / 24);
-
-        // Calculate months and remaining days
-        const months = Math.floor(totalDays / 30);
-        const days = totalDays % 30;
-
-        document.getElementById(`${prefix}-months-count`).textContent = months;
-        document.getElementById(`${prefix}-days-count`).textContent = days;
-        document.getElementById(`${prefix}-hours-count`).textContent = hours;
-        document.getElementById(`${prefix}-minutes-count`).textContent = minutes;
-        document.getElementById(`${prefix}-seconds-count`).textContent = seconds;
-
-        return true; // Event still upcoming
-    }
-
-    function updateAllCountdowns() {
-        updateCountdown(events.reception1, 'ijab', 'ijab-countdown', 'Our Wedding');
-        updateCountdown(events.reception2, 'rec2', 'reception2-countdown', '2nd Reception');
-    }
-
     function createFlower() {
         const flower = document.createElement('div');
         flower.className = 'flower';
@@ -544,8 +440,6 @@
     setInterval(updateCurrentDatetime, 1000); // Update every second
 
     markCompletedEvents();
-    updateAllCountdowns();
-    setInterval(updateAllCountdowns, 1000); // Update all countdowns every second
 
     // Flowers animation
     setInterval(createFlower, 800);
