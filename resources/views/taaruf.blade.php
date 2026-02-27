@@ -349,6 +349,27 @@
         <p id="reception2-date"><strong>2nd Reception:</strong> December 29, 2025</p>
     </div>
 
+    <!-- Wedding Count Up -->
+    <div class="countdown-section completed" id="wedding-countup">
+        <h2 class="countdown-title completed">Married for 💍✨</h2>
+        <div class="countdown-display">
+            <div class="countdown-row">
+                <div class="countdown-item">
+                    <div class="countdown-number" id="wed-months-count">0</div>
+                    <div class="countdown-label">Months</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="wed-days-count">0</div>
+                    <div class="countdown-label">Days</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="wed-hours-count">0</div>
+                    <div class="countdown-label">Hours</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <p id="current-datetime"></p>
 </div>
 
@@ -409,6 +430,24 @@
         });
     }
 
+    function updateWeddingCountUp() {
+        const weddingDate = events.reception1;
+        const now = new Date();
+        const timeDiff = now - weddingDate;
+
+        if (timeDiff <= 0) return;
+
+        const totalHours = Math.floor(timeDiff / (1000 * 60 * 60));
+        const hours = totalHours % 24;
+        const totalDays = Math.floor(totalHours / 24);
+        const months = Math.floor(totalDays / 30);
+        const days = totalDays % 30;
+
+        document.getElementById('wed-months-count').textContent = months;
+        document.getElementById('wed-days-count').textContent = days;
+        document.getElementById('wed-hours-count').textContent = hours;
+    }
+
     function createFlower() {
         const flower = document.createElement('div');
         flower.className = 'flower';
@@ -440,6 +479,8 @@
     setInterval(updateCurrentDatetime, 1000); // Update every second
 
     markCompletedEvents();
+    updateWeddingCountUp();
+    setInterval(updateWeddingCountUp, 1000);
 
     // Flowers animation
     setInterval(createFlower, 800);
