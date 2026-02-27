@@ -351,7 +351,7 @@
 
     <!-- Wedding Count Up -->
     <div class="countdown-section completed" id="wedding-countup">
-        <h2 class="countdown-title completed">Married for 💍✨</h2>
+        <h2 class="countdown-title completed">❤️ Married for ❤️</h2>
         <div class="countdown-display">
             <div class="countdown-row">
                 <div class="countdown-item">
